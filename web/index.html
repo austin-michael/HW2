@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Cryptosystem</title>
+</head>
+<body>
+  <h1>Cryptosystem</h1>
+  <div>
+    <button onclick="genPubKey(event)">Generate Public Key</button>
+    <span>&nbsp;</span>
+    <button>Generate Private Key</button>
+  </div>
+  <script>
+      function genPubKey(e) {
+        e.preventDefault();
+        alert('Not Implemented!');
+        // 1. Find 2 prime numbers
+        //     P = 5, Q = 11
+  
+        // 2. Calculate the modulus
+        //     M = P*Q
+        //     M = 55
+  
+        // 3. Calculate f(n)
+        //     f(n) = (P - 1) * (Q - 1)
+        //     4 * 10 = 40
+  
+        // 4. Find Relatively Prime numbers of f(n)
+        //     3, 7, 9, 11, 13, 17, 19 ... (< f(n))
+        //     using 7 for next step
+  
+        // 5. Public Key: (7, 55)
+        //                 7: Public Encryption Exponent (P_E)
+  
+        // 6. Private Key Generation:
+        //     (Public Encryption Exponent x Private Decryption Exponent) mod f(n) = 1
+  
+        // = (7*P_d) mod 40 = 1
+  
+        // P_d = 23
+  
+        // 7 * 23 = 161 mod 40 = 1
+  
+        // 7. Private Key (23, 55)
+  
+        // 8. Encryption process
+        //     e = (p^{P_E})mod(m) where p is the plaintext
+        //       = (2^7) mod 55
+        //       = 18
+  
+        // 9. Decryption process
+        //     p = (e^P_d) mod (m)
+        //       = (18^23) mod (55)
+        //       = 2
+      } 
+      
+      function isPrime(num) {
+          if (num % 2 == 0) {
+            return false;
+          }
+          const root = Math.sqrt(num);
+          if (Number.isInteger(root)) { // If the root is an integer we skip a lot of checking here.
+            return false;
+          }
+          // Composite number is always p * q, because of this,
+          // the max that the lesser of {p, q} AKA ( max(min(p, q)) ),
+          // could be is when p == q.
+          // Therefore only need to check to sqrt(num)
+          // Also, only need to check odd numbers (Technically only need 
+          // to check prime numbers, but I'm not sure how to do that without 
+          // ballooning complexity)
+          for ( var i = 3; i < root; i += 2 ) {
+              if ( num % i === 0 ) {
+                  return false;
+              }
+          }
+          return true;
+      } 
+
+      function randomIntFromInterval(min, max) { // min and max included 
+        return Math.floor(Math.random() * (max - min + 1) + min);
+      } 
+      function getNextPrime(num) {
+        // We only need to check odd numbers
+        if ((num % 2) == 0) {
+          num += 1;
+        } else {
+          num += 2;
+        }
+        while (!isPrime(num)) {
+          num += 2;
+        }
+        return num
+      }
+  </script>
+  
+</body>
+</html>
