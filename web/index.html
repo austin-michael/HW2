@@ -98,8 +98,8 @@
         e.preventDefault();
         // 1. Find 2 prime numbers
         //     P = 5, Q = 11
-        const P = 11 //randomPrime()
-        const Q = 13 //randomPrime()
+        const P = randomPrime()
+        const Q = randomPrime()
   
         // 2. Calculate the modulus
         //     M = P*Q
@@ -117,12 +117,14 @@
         //     3, 7, 9, 11, 13, 17, 19 ... (< f(n))
         //     using 7 for next step
 
-        const rp = 121 //getRelativePrime(fn)
-        const factor = 
+        // finds a realative prime, whos factor is also a realtive prime.
+        const factors = getRelativePrime(fn)
+        const relativePrime = factors[factors.length - 1];
+        const publicKey = factors[1];
   
         // 5. Public Key: (7, 55)
         //                 7: Public Encryption Exponent (P_E)
-        document.getElementById("pubKey").innerText = `${rp},${M}`
+        document.getElementById("pubKey").innerText = `${publicKey},${M}`
 
   
         // 6. Private Key Generation:
@@ -136,7 +138,7 @@
         // 7 * 23 = 161 mod 40 = 1
   
         // 7. Private Key (23, 55)
-        const priD = getPrivateKey(rp, fn)
+        const priD = getPrivateKey(publicKey, relativePrime)
         document.getElementById("priKey").innerText = `${priD},${M}`
   
         // 8. Encryption process
@@ -159,7 +161,10 @@
         let modulus = encryptKeysArr[1];
         let encryption = [];
         for (let i = 0; i < plaintext.length; i++){
-          encryption.push(Math.pow(plaintext[i].charCodeAt(0),exponent)%modulus);
+          charchar = plaintext[i].charCodeAt(0);
+          charVal = BigInt(charchar)**BigInt(exponent);
+          charVal = charVal%BigInt(modulus);
+          encryption.push(Number(charVal));
         }
         document.getElementById("encryptOutput").innerText = encryption.join(",");
 
@@ -177,15 +182,15 @@
         let modulus = decryptKeysArr[1];
         let decryption = [];
         for (let i = 0; i < cipherText.length; i++){
-          let temp = Math.pow(cipherTextArr[i],exponent)%modulus;
-          temp = String.fromCharCode(temp);
+          let temp = BigInt(cipherTextArr[i])**BigInt(exponent)%BigInt(modulus);
+          temp = String.fromCharCode(Number(temp));
           decryption.push(temp);
         }
         document.getElementById("decryptOutput").innerText = decryption.join("");
       }
 
       function randomPrime() {
-        return getNextPrime(randomIntFromInterval(1, 94906265));
+        return getNextPrime(randomIntFromInterval(1, 997));
       }
       
 
@@ -237,23 +242,41 @@
       }
 
       function getRelativePrime(num){
-        let rp = 9;
-        while (gcd(rp, num) != 1){
-          rp += 2;
+        let temp = num +1;
+        let rp = factors(temp)
+        while (rp.length <= 3){
+          temp += num;
+          rp = factors(temp);
         }
         return rp;
       }
 
-     //     (Public Encryption Exponent x Private Decryption Exponent) mod f(n) = 1
-      function getPrivateKey(pubE, fn){
-        let priE = pubE;
-        console.log(pubE)
-        console.log(fn)
-        while ((pubE * priE) % fn != 1){
-          priE +=1;
-          //console.log(priE);
+      function factors(n){
+        var num_factors = [], i;
+ 
+        for (i = 1; i <= Math.floor(Math.sqrt(n)); i += 1){
+          if (n % i === 0){
+            num_factors.push(i);
+            if (n / i !== i){
+              num_factors.push(n / i);
+            }
+          }
         }
-        console.log("im here");
+        num_factors.sort(function(x, y){return x - y;});  // numeric sort
+        return num_factors;
+    }
+
+
+     //     (Public Encryption Exponent x Private Decryption Exponent) mod f(n) = 1
+      function getPrivateKey(pubE, rp){
+        let priE = rp / pubE;
+        // console.log(pubE)
+        // console.log(fn)
+        // while ((pubE * priE) % fn != 1){
+        //   priE +=1;
+        //   //console.log(priE);
+        // }
+        //console.log("im here");
         return priE;
       }
   </script>
