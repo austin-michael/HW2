@@ -4,16 +4,20 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <meta charset="utf-8">
   <title>Cryptosystem</title>
+
+  <style>
+    .row {
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 25px;
+    }
+
+  </style>
+
 </head>
 <body>
 
-  <div>
-    <button onclick="genPubKey(event)">Generate Public Key</button>
-    <span>&nbsp;</span>
-    <button>Generate Private Key</button>
-  </div>
-
-  <div class="jumbotron text-center">
+  <!-- <div class="jumbotron text-center">
       <h1>Cryptanalysis</h1>
       <p>The following will allow you to crack the key used for Columnar Transpostion given the plaintext and corresponding ciphertext.</p>
   </div>
@@ -27,23 +31,67 @@
       <label for="ciphertext">Ciphertext:</label>
       <textarea class="form-control" rows="5" id="ciphertext"></textarea>
     </div>
-  </div>
+  </div> -->
 
   <div class="jumbotron text-center">
       <h1>RSA Cryptosystem</h1>
       <p>The following will allow you to Generate a public and private key pair, decrypt, and encrypt your message.</p>
   </div>
 
+  <h2 class="text-center">Generate RSA Key</h2>
   <div class="row">
     <div class="col form-group text-center">
-      <button type="button" class="btn btn-primary">Generate Public Key</button>
-      <textarea class="form-control" rows="5" id="public_key"></textarea>
+      <button onclick="genPubKey(event)" type="button" class="btn btn-primary">Generate Public Key</button>
+      <br></br>
+      <textarea class="form-control" rows="5" id="pubKey"></textarea>
     </div>
     <div class="col form-group text-center">
-      <button type="button" class="btn btn-primary">Generate Private Key</button>
-      <textarea class="form-control" rows="5" id="private_key"></textarea>
+      <button onclick="genPriKey(event)" type="button" class="btn btn-primary">Generate Private Key</button>
+      <br></br>
+      <textarea class="form-control" rows="5" id="priKey"></textarea>
     </div>
   </div>
+
+  <h2 class="text-center">RSA Encryption/Decryption</h2>
+  <div class="row">
+    <div class="col form-group">
+      <h3>RSA Encryption</h3>
+      <label for="encrypt">Enter Plaintext for Encryption</label>
+      <textarea class="form-control" rows="5" id="encrypt"></textarea>
+    </div>
+    <div class="col form-group">
+      <h3>RSA Decryption</h3>
+      <label for="decrypt">Enter Encrypted Text for Decryption:</label>
+      <textarea class="form-control" rows="5" id="decrypt"></textarea>
+
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col form-group">
+      <label for="encrypt">Enter Public/Private Key:</label>
+      <textarea class="form-control" rows="5" id="encrypt"></textarea>
+      <br></br>
+      <button onclick="" type="button" class="btn btn-primary">Encrypt</button>
+    </div>
+    <div class="col form-group">
+      <label for="decrypt">Enter Public/Private Key:</label>
+      <textarea class="form-control" rows="5" id="decrypt"></textarea>
+      <br></br>
+      <button onclick="" type="button" class="btn btn-primary">Decrypt</button>
+    </div>
+  </div>
+
+  <div class="row">
+      <div class="col form-group">
+        <label for="encrypt">Encrypted Output:</label>
+        <textarea class="form-control" rows="5" id="encrypt"></textarea>
+      </div>
+      <div class="col form-group">
+        <label for="decrypt">Decrypted Output:</label>
+        <textarea class="form-control" rows="5" id="decrypt"></textarea>
+      </div>
+    </div>
 
   <script>
       function genPubKey(e) {
@@ -87,8 +135,20 @@
         //     p = (e^P_d) mod (m)
         //       = (18^23) mod (55)
         //       = 2
+
+        var retPubKey = document.getElementById('pubKey')
+        retPubKey.textContent += "Insert Public Key Here";
       } 
       
+      function genPriKey(e) {
+        e.preventDefault();
+        alert('Not Implemented');
+
+        
+        var retPriKey = document.getElementById('priKey')
+        retPriKey.textContent += "Insert Private Key Here";
+      }
+
       function isPrime(num) {
           if (num % 2 == 0) {
             return false;
