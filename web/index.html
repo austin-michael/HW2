@@ -72,12 +72,30 @@
       <label for="encrypt">Enter Public/Private Key:</label>
       <textarea class="form-control" rows="5" id="encrypt"></textarea>
       <br></br>
+      <div>
+        <h5>Select Key Type:</h5>
+        <label class="radio">
+          <input type="radio" name="encryptionRadio" id="pubKeyEncRadio">Public Key
+        </label>
+        <label class="radio" id="priKeyEncRadio">
+          <input type="radio" name="encryptionRadio">Private Key
+        </label>
+      </div>
       <button onclick="" type="button" class="btn btn-primary">Encrypt</button>
     </div>
     <div class="col form-group">
       <label for="decrypt">Enter Public/Private Key:</label>
       <textarea class="form-control" rows="5" id="decrypt"></textarea>
       <br></br>
+      <h5>Select Key Type:</h5>
+      <div>
+        <label class="radio">
+          <input type="radio" name="decryptionRadio" id="pubKeyDecRadio">Public Key
+        </label>
+        <label class="radio">
+          <input type="radio" name="decryptionRadio" id="priKeyDecRadio">Private Key
+        </label>
+      </div>
       <button onclick="" type="button" class="btn btn-primary">Decrypt</button>
     </div>
   </div>
