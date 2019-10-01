@@ -94,19 +94,25 @@
     </div>
 
   <script>
-      function genPubKey(e) {
+      function genKeys(e) {
         e.preventDefault();
         alert('Not Implemented!');
         // 1. Find 2 prime numbers
         //     P = 5, Q = 11
+        const P = randomPrime()
+        const Q = randomPrime()
   
         // 2. Calculate the modulus
         //     M = P*Q
         //     M = 55
+
+        const M = P * Q
   
         // 3. Calculate f(n)
         //     f(n) = (P - 1) * (Q - 1)
         //     4 * 10 = 40
+
+        const fn = (P - 1) * (Q - 1)
   
         // 4. Find Relatively Prime numbers of f(n)
         //     3, 7, 9, 11, 13, 17, 19 ... (< f(n))
@@ -138,7 +144,11 @@
 
         var retPubKey = document.getElementById('pubKey')
         retPubKey.textContent += "Insert Public Key Here";
-      } 
+      }
+
+      function randomPrime() {
+        return getNextPrime(randomIntFromInterval(1, 94906265));
+      }
       
       function genPriKey(e) {
         e.preventDefault();
