@@ -41,12 +41,12 @@
   <h2 class="text-center">Generate RSA Key</h2>
   <div class="row">
     <div class="col form-group text-center">
-      <button onclick="genPubKey(event)" type="button" class="btn btn-primary">Generate Public Key</button>
+      <button onclick="genKeys(event)" type="button" class="btn btn-primary">Generate Public Key</button>
       <br></br>
       <textarea class="form-control" rows="5" id="pubKey"></textarea>
     </div>
     <div class="col form-group text-center">
-      <button onclick="genPriKey(event)" type="button" class="btn btn-primary">Generate Private Key</button>
+      <button onclick="genKeys(event)" type="button" class="btn btn-primary">Generate Private Key</button>
       <br></br>
       <textarea class="form-control" rows="5" id="priKey"></textarea>
     </div>
@@ -57,68 +57,49 @@
     <div class="col form-group">
       <h3>RSA Encryption</h3>
       <label for="encrypt">Enter Plaintext for Encryption</label>
-      <textarea class="form-control" rows="5" id="encrypt"></textarea>
+      <textarea class="form-control" rows="5" id="encryptText"></textarea>
     </div>
     <div class="col form-group">
       <h3>RSA Decryption</h3>
       <label for="decrypt">Enter Encrypted Text for Decryption:</label>
-      <textarea class="form-control" rows="5" id="decrypt"></textarea>
+      <textarea class="form-control" rows="5" id="decryptText"></textarea>
 
     </div>
   </div>
 
   <div class="row">
     <div class="col form-group">
-      <label for="encrypt">Enter Public/Private Key:</label>
-      <textarea class="form-control" rows="5" id="encrypt"></textarea>
+      <label for="encrypt">Enter Encrypt Key:</label>
+      <textarea class="form-control" rows="5" id="encryptKey"></textarea>
       <br></br>
-      <div>
-        <h5>Select Key Type:</h5>
-        <label class="radio">
-          <input type="radio" name="encryptionRadio" id="pubKeyEncRadio">Public Key
-        </label>
-        <label class="radio" id="priKeyEncRadio">
-          <input type="radio" name="encryptionRadio">Private Key
-        </label>
-      </div>
-      <button onclick="" type="button" class="btn btn-primary">Encrypt</button>
+      <button onclick="encrypt()" type="button" class="btn btn-primary">Encrypt</button>
     </div>
     <div class="col form-group">
-      <label for="decrypt">Enter Public/Private Key:</label>
-      <textarea class="form-control" rows="5" id="decrypt"></textarea>
+      <label for="decrypt">Enter Decrypt Key:</label>
+      <textarea class="form-control" rows="5" id="decryptKey"></textarea>
       <br></br>
-      <h5>Select Key Type:</h5>
-      <div>
-        <label class="radio">
-          <input type="radio" name="decryptionRadio" id="pubKeyDecRadio">Public Key
-        </label>
-        <label class="radio">
-          <input type="radio" name="decryptionRadio" id="priKeyDecRadio">Private Key
-        </label>
-      </div>
-      <button onclick="" type="button" class="btn btn-primary">Decrypt</button>
+      <button onclick="decrypt()" type="button" class="btn btn-primary">Decrypt</button>
     </div>
   </div>
 
   <div class="row">
       <div class="col form-group">
         <label for="encrypt">Encrypted Output:</label>
-        <textarea class="form-control" rows="5" id="encrypt"></textarea>
+        <textarea class="form-control" rows="5" id="encryptOutput"></textarea>
       </div>
       <div class="col form-group">
         <label for="decrypt">Decrypted Output:</label>
-        <textarea class="form-control" rows="5" id="decrypt"></textarea>
+        <textarea class="form-control" rows="5" id="decryptOutput"></textarea>
       </div>
     </div>
 
   <script>
       function genKeys(e) {
         e.preventDefault();
-        alert('Not Implemented!');
         // 1. Find 2 prime numbers
         //     P = 5, Q = 11
-        const P = randomPrime()
-        const Q = randomPrime()
+        const P = 11 //randomPrime()
+        const Q = 13 //randomPrime()
   
         // 2. Calculate the modulus
         //     M = P*Q
@@ -135,12 +116,18 @@
         // 4. Find Relatively Prime numbers of f(n)
         //     3, 7, 9, 11, 13, 17, 19 ... (< f(n))
         //     using 7 for next step
+
+        const rp = 121 //getRelativePrime(fn)
+        const factor = 
   
         // 5. Public Key: (7, 55)
         //                 7: Public Encryption Exponent (P_E)
+        document.getElementById("pubKey").innerText = `${rp},${M}`
+
   
         // 6. Private Key Generation:
         //     (Public Encryption Exponent x Private Decryption Exponent) mod f(n) = 1
+
   
         // = (7*P_d) mod 40 = 1
   
@@ -149,33 +136,58 @@
         // 7 * 23 = 161 mod 40 = 1
   
         // 7. Private Key (23, 55)
+        const priD = getPrivateKey(rp, fn)
+        document.getElementById("priKey").innerText = `${priD},${M}`
   
         // 8. Encryption process
-        //     e = (p^{P_E})mod(m) where p is the plaintext
         //       = (2^7) mod 55
         //       = 18
   
         // 9. Decryption process
-        //     p = (e^P_d) mod (m)
         //       = (18^23) mod (55)
         //       = 2
 
-        var retPubKey = document.getElementById('pubKey')
-        retPubKey.textContent += "Insert Public Key Here";
+      }
+
+      //     e = (p^{P_E})mod(m) where p is the plaintext
+      function encrypt(){
+        let plaintext = document.getElementById("encryptText").value;
+        let encryptKeyText = document.getElementById("encryptKey").value;
+        encryptKeyText = encryptKeyText.split(',');
+        let encryptKeysArr = encryptKeyText.map(x => parseInt(x));
+        let exponent = encryptKeysArr[0];
+        let modulus = encryptKeysArr[1];
+        let encryption = [];
+        for (let i = 0; i < plaintext.length; i++){
+          encryption.push(Math.pow(plaintext[i].charCodeAt(0),exponent)%modulus);
+        }
+        document.getElementById("encryptOutput").innerText = encryption.join(",");
+
+      }
+
+      //     p = (e^P_d) mod (m)
+      function decrypt(){
+        let cipherText = document.getElementById("decryptText").value;
+        let decryptKeyText = document.getElementById("decryptKey").value;
+        decryptKeyText = decryptKeyText.split(',');
+        cipherText = cipherText.split(',');
+        let decryptKeysArr = decryptKeyText.map(x => parseInt(x));
+        let cipherTextArr = cipherText.map(x => parseInt(x));
+        let exponent = decryptKeysArr[0];
+        let modulus = decryptKeysArr[1];
+        let decryption = [];
+        for (let i = 0; i < cipherText.length; i++){
+          let temp = Math.pow(cipherTextArr[i],exponent)%modulus;
+          temp = String.fromCharCode(temp);
+          decryption.push(temp);
+        }
+        document.getElementById("decryptOutput").innerText = decryption.join("");
       }
 
       function randomPrime() {
         return getNextPrime(randomIntFromInterval(1, 94906265));
       }
       
-      function genPriKey(e) {
-        e.preventDefault();
-        alert('Not Implemented');
-
-        
-        var retPriKey = document.getElementById('priKey')
-        retPriKey.textContent += "Insert Private Key Here";
-      }
 
       function isPrime(num) {
           if (num % 2 == 0) {
@@ -192,7 +204,7 @@
           // Also, only need to check odd numbers (Technically only need 
           // to check prime numbers, but I'm not sure how to do that without 
           // ballooning complexity)
-          for ( var i = 3; i < root; i += 2 ) {
+          for ( let i = 3; i < root; i += 2 ) {
               if ( num % i === 0 ) {
                   return false;
               }
@@ -215,8 +227,34 @@
         }
         return num
       }
+      function gcd(num1, num2){
+        while(num2){
+          let t = num2;
+          num2 = num1 % num2;
+          num1 = t;
+        }
+        return num1;
+      }
+
       function getRelativePrime(num){
-        return num - 1;
+        let rp = 9;
+        while (gcd(rp, num) != 1){
+          rp += 2;
+        }
+        return rp;
+      }
+
+     //     (Public Encryption Exponent x Private Decryption Exponent) mod f(n) = 1
+      function getPrivateKey(pubE, fn){
+        let priE = pubE;
+        console.log(pubE)
+        console.log(fn)
+        while ((pubE * priE) % fn != 1){
+          priE +=1;
+          //console.log(priE);
+        }
+        console.log("im here");
+        return priE;
       }
   </script>
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
