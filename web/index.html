@@ -38,45 +38,44 @@
       <p>The following will allow you to Generate a public and private key pair, decrypt, and encrypt your message.</p>
   </div>
 
-  <h2 class="text-center">Generate RSA Key</h2>
+  <div style="text-align: center">
+    <button onclick="genKeys(event)" type="button" class="btn btn-primary">Generate Public/Private Key Pair</button>
+  </div>
+  
   <div class="row">
     <div class="col form-group text-center">
-      <button onclick="genKeys(event)" type="button" class="btn btn-primary">Generate Public Key</button>
-      <br></br>
-      <textarea class="form-control" rows="5" id="pubKey"></textarea>
+      <label for="pubKey">Public Key:</label>
+      <textarea class="form-control" rows="3" id="pubKey" placeholder="Public Key Appears Here"></textarea>
     </div>
     <div class="col form-group text-center">
-      <button onclick="genKeys(event)" type="button" class="btn btn-primary">Generate Private Key</button>
-      <br></br>
-      <textarea class="form-control" rows="5" id="priKey"></textarea>
+      <label for="priKey">Private Key:</label>
+      <textarea class="form-control" rows="3" id="priKey" placeholder="Private Key Appears Here"></textarea>
     </div>
   </div>
 
-  <h2 class="text-center">RSA Encryption/Decryption</h2>
   <div class="row">
     <div class="col form-group">
       <h3>RSA Encryption</h3>
       <label for="encrypt">Enter Plaintext for Encryption</label>
-      <textarea class="form-control" rows="5" id="encryptText"></textarea>
+      <textarea class="form-control" rows="5" id="encryptText" placeholder="Enter Plaintext for Encryption"></textarea>
     </div>
     <div class="col form-group">
       <h3>RSA Decryption</h3>
       <label for="decrypt">Enter Encrypted Text for Decryption:</label>
-      <textarea class="form-control" rows="5" id="decryptText"></textarea>
-
+      <textarea class="form-control" rows="5" id="decryptText" placeholder="Enter Encrypted Text for Decryption:"></textarea>
     </div>
   </div>
 
   <div class="row">
     <div class="col form-group">
       <label for="encrypt">Enter Encrypt Key:</label>
-      <textarea class="form-control" rows="5" id="encryptKey"></textarea>
+      <textarea class="form-control" rows="5" id="encryptKey" placeholder="Enter Encrypt Key:"></textarea>
       <br></br>
       <button onclick="encrypt()" type="button" class="btn btn-primary">Encrypt</button>
     </div>
     <div class="col form-group">
       <label for="decrypt">Enter Decrypt Key:</label>
-      <textarea class="form-control" rows="5" id="decryptKey"></textarea>
+      <textarea class="form-control" rows="5" id="decryptKey" placeholder="Enter Decrypt Key:"></textarea>
       <br></br>
       <button onclick="decrypt()" type="button" class="btn btn-primary">Decrypt</button>
     </div>
@@ -85,11 +84,11 @@
   <div class="row">
       <div class="col form-group">
         <label for="encrypt">Encrypted Output:</label>
-        <textarea class="form-control" rows="5" id="encryptOutput"></textarea>
+        <textarea class="form-control" rows="5" id="encryptOutput" placeholder="Encrypted Message Appears Here"></textarea>
       </div>
       <div class="col form-group">
         <label for="decrypt">Decrypted Output:</label>
-        <textarea class="form-control" rows="5" id="decryptOutput"></textarea>
+        <textarea class="form-control" rows="5" id="decryptOutput" placeholder="Decrypted Message Appears Here"></textarea>
       </div>
     </div>
 
