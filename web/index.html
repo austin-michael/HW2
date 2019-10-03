@@ -124,6 +124,9 @@
         // 5. Public Key: (7, 55)
         //                 7: Public Encryption Exponent (P_E)
         document.getElementById("pubKey").innerText = `${publicKey},${M}`
+        
+        let pubDownload =`${publicKey},${M}`
+        download(pubDownload , "public.key", "txt")
 
   
         // 6. Private Key Generation:
@@ -137,8 +140,12 @@
         // 7 * 23 = 161 mod 40 = 1
   
         // 7. Private Key (23, 55)
+        
         const priD = getPrivateKey(publicKey, relativePrime)
         document.getElementById("priKey").innerText = `${priD},${M}`
+
+        let priDownload = `${priD},${M}`
+        download(priDownload , "private.key", "txt")
   
         // 8. Encryption process
         //       = (2^7) mod 55
@@ -278,6 +285,20 @@
         //console.log("im here");
         return priE;
       }
+
+    function download(data, filename, type) {
+      let file = new Blob([data], {type: type});
+      let a = document.createElement("a"), url = URL.createObjectURL(file);
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      setTimeout(function() {
+          document.body.removeChild(a);
+          window.URL.revokeObjectURL(url);  
+      }, 0); 
+    }
+
   </script>
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
