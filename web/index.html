@@ -49,26 +49,25 @@
   <div class="row">
     <div class="col form-group">
       <h3>RSA Encryption</h3>
-      <label for="encrypt">Enter Plaintext for Encryption</label>
+      <label for="encrypt">Enter Plaintext for Encryption:</label>
       <textarea class="form-control" rows="5" id="encryptText" placeholder="Enter Plaintext for Encryption"></textarea>
     </div>
     <div class="col form-group">
       <h3>RSA Decryption</h3>
       <label for="decrypt">Enter Encrypted Text for Decryption:</label>
-      <textarea class="form-control" rows="5" id="decryptText"
-        placeholder="Enter Encrypted Text for Decryption:"></textarea>
+      <textarea class="form-control" rows="5" id="decryptText" placeholder="Enter Encrypted Text for Decryption:"></textarea>
     </div>
   </div>
 
   <div class="row">
     <div class="col form-group">
-      <label for="encrypt">Upload Encrypt Key:</label>
+      <h5>Upload Encrypt Key:</h5>
       <input type="file" name="encrypt" value="fileupload" id="encryptFile">
       <br></br>
       <button onclick="encrypt()" type="button" class="btn btn-primary">Encrypt</button>
     </div>
     <div class="col form-group">
-      <label for="decrypt">Upload Decrypt Key:</label>
+      <h5>Upload Decrypt Key:</h5>
       <input type="file" name="decrypt" value="fileupload" id="decryptFile">
       <br></br>
       <button onclick="decrypt()" type="button" class="btn btn-primary">Decrypt</button>
