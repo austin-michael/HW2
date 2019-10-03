@@ -1,32 +1,40 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <meta charset="utf-8">
   <title>Cryptosystem</title>
-  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
+  </script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
+  </script>
   <style>
     .row {
       padding-left: 50px;
       padding-right: 50px;
       padding-top: 25px;
     }
-
   </style>
 
 </head>
+
 <body>
   <div class="jumbotron text-center">
-      <h1>RSA Cryptosystem</h1>
-      <p>The following will allow you to Generate a public and private key pair, decrypt, and encrypt your message.</p>
+    <h1>RSA Cryptosystem</h1>
+    <p>The following will allow you to Generate a public and private key pair, decrypt, and encrypt your message.</p>
   </div>
 
   <div style="text-align: center">
     <button onclick="genKeys(event)" type="button" class="btn btn-primary">Generate Public/Private Key Pair</button>
   </div>
-  
+
   <div class="row">
     <div class="col form-group text-center">
       <label for="pubKey">Public Key:</label>
@@ -47,7 +55,8 @@
     <div class="col form-group">
       <h3>RSA Decryption</h3>
       <label for="decrypt">Enter Encrypted Text for Decryption:</label>
-      <textarea class="form-control" rows="5" id="decryptText" placeholder="Enter Encrypted Text for Decryption:"></textarea>
+      <textarea class="form-control" rows="5" id="decryptText"
+        placeholder="Enter Encrypted Text for Decryption:"></textarea>
     </div>
   </div>
 
@@ -67,241 +76,249 @@
   </div>
 
   <div class="row">
-      <div class="col form-group">
-        <label for="encrypt">Encrypted Output:</label>
-        <textarea readonly class="form-control" rows="5" id="encryptOutput" placeholder="Encrypted Message Appears Here"></textarea>
-      </div>
-      <div class="col form-group">
-        <label for="decrypt">Decrypted Output:</label>
-        <textarea readonly class="form-control" rows="5" id="decryptOutput" placeholder="Decrypted Message Appears Here"></textarea>
-      </div>
+    <div class="col form-group">
+      <label for="encrypt">Encrypted Output:</label>
+      <textarea readonly class="form-control" rows="5" id="encryptOutput"
+        placeholder="Encrypted Message Appears Here"></textarea>
     </div>
+    <div class="col form-group">
+      <label for="decrypt">Decrypted Output:</label>
+      <textarea readonly class="form-control" rows="5" id="decryptOutput"
+        placeholder="Decrypted Message Appears Here"></textarea>
+    </div>
+  </div>
 
   <script>
-      function genKeys(e) {
-        e.preventDefault();
-        // 1. Find 2 prime numbers
-        //     P = 5, Q = 11
-        const P = randomPrime();
-        const Q = randomPrime();
-  
-        // 2. Calculate the modulus
-        //     M = P*Q
-        //     M = 55
+    function genKeys(e) {
+      e.preventDefault();
+      // 1. Find 2 prime numbers
+      //     P = 5, Q = 11
+      const P = randomPrime();
+      const Q = randomPrime();
 
-        const M = P * Q;
-  
-        // 3. Calculate f(n) (Totient of n)
-        //     f(n) = (P - 1) * (Q - 1)
-        //     4 * 10 = 40
+      // 2. Calculate the modulus
+      //     M = P*Q
+      //     M = 55
 
-        const fn = (P - 1) * (Q - 1);
-  
-        // 4. Find Relatively Prime numbers of f(n)
-        //     3, 7, 9, 11, 13, 17, 19 ... (< f(n))
-        //     using 7 for next step
+      const M = P * Q;
 
-        // finds a realative prime, whos factor is also a realtive prime.
-        const factors = getRelativePrime(fn);
-        const relativePrime = factors[factors.length - 1];
-        const publicKey = factors[1];
-  
-        // 5. Public Key: (7, 55)
-        //                 7: Public Encryption Exponent (P_E)
-        document.getElementById("pubKey").innerText = `${publicKey},${M}`
-        
-        let pubDownload =`${publicKey},${M}`
-        download(pubDownload , "public.key", "txt")
+      // 3. Calculate f(n) (Totient of n)
+      //     f(n) = (P - 1) * (Q - 1)
+      //     4 * 10 = 40
 
-  
-        // 6. Private Key Generation:
-        //     (Public Encryption Exponent x Private Decryption Exponent) mod f(n) = 1
+      const fn = (P - 1) * (Q - 1);
 
-  
-        // = (7*P_d) mod 40 = 1
-  
-        // P_d = 23
-  
-        // 7 * 23 = 161 mod 40 = 1
-  
-        // 7. Private Key (23, 55)
-        
-        const priD = getPrivateKey(publicKey, relativePrime)
-        document.getElementById("priKey").innerText = `${priD},${M}`
+      // 4. Find Relatively Prime numbers of f(n)
+      //     3, 7, 9, 11, 13, 17, 19 ... (< f(n))
+      //     using 7 for next step
 
-        let priDownload = `${priD},${M}`
-        download(priDownload , "private.key", "txt")
+      // finds a realative prime, whos factor is also a realtive prime.
+      const factors = getRelativePrime(fn);
+      const relativePrime = factors[factors.length - 1];
+      const publicKey = factors[1];
 
-      }
+      // 5. Public Key: (7, 55)
+      //                 7: Public Encryption Exponent (P_E)
+      document.getElementById("pubKey").innerText = `${publicKey},${M}`
+
+      let pubDownload = `${publicKey},${M}`
+      download(pubDownload, "public.key", "txt")
 
 
-      //     e = (p^{P_E})mod(m) where p is the plaintext
-      // 8. Encryption process
-      //       = (2^7) mod 55
-      //       = 18
-      function encrypt(){
-        genEncryptText();
-      }
+      // 6. Private Key Generation:
+      //     (Public Encryption Exponent x Private Decryption Exponent) mod f(n) = 1
 
-      function genEncryptText() {
-        let plaintext = document.getElementById("encryptText").value;
-        fileEl = document.getElementById('encryptFile');
-        fr = new FileReader();
-        fr.onload = function () {
-          let encryptKeyText = fr.result;
-          encryptKeyText = encryptKeyText.split(',');
-          let encryptKeysArr = encryptKeyText.map(x => parseInt(x));
-          let exponent = encryptKeysArr[0];
-          let modulus = encryptKeysArr[1];
-          let encryption = [];
-          for (let i = 0; i < plaintext.length; i++){
-            charchar = plaintext[i].charCodeAt(0);
-            charVal = BigInt(charchar)**BigInt(exponent);
-            charVal = charVal%BigInt(modulus);
-            encryption.push(Number(charVal));
-          }
-          document.getElementById("encryptOutput").innerText = encryption.join(",");
-        }
-        fr.readAsText(fileEl.files[0]);
-      }
 
-      //     p = (e^P_d) mod (m)
-      // 9. Decryption process
-      //       = (18^23) mod (55)
-      //       = 2
-      function decrypt(){
-        genDencryptText();
-      }
+      // = (7*P_d) mod 40 = 1
 
-      function genDencryptText() {
-        let cipherText = document.getElementById("decryptText").value;
-        fileEl = document.getElementById('decryptFile');
-        fr = new FileReader();
-        fr.onload = function () {
-          let decryptKeyText = fr.result;
-          decryptKeyText = decryptKeyText.split(',');
-          cipherText = cipherText.split(',');
-          let decryptKeysArr = decryptKeyText.map(x => parseInt(x));
-          let cipherTextArr = cipherText.map(x => parseInt(x));
-          let exponent = decryptKeysArr[0];
-          let modulus = decryptKeysArr[1];
-          let decryption = [];
-          for (let i = 0; i < cipherText.length; i++){
-            let temp = BigInt(cipherTextArr[i])**BigInt(exponent)%BigInt(modulus);
-            temp = String.fromCharCode(Number(temp));
-            decryption.push(temp);
-          }
-          document.getElementById("decryptOutput").innerText = decryption.join("");
-        }
-        fr.readAsText(fileEl.files[0]);
-      }
+      // P_d = 23
 
-      function randomPrime() {
-        return getNextPrime(randomIntFromInterval(1, 997));
-      }
-      
+      // 7 * 23 = 161 mod 40 = 1
 
-      function isPrime(num) {
-          if (num % 2 == 0) {
-            return false;
-          }
-          const root = Math.sqrt(num);
-          if (Number.isInteger(root)) { // If the root is an integer we skip a lot of checking here.
-            return false;
-          }
-          // Composite number is always p * q, because of this,
-          // the max that the lesser of {p, q} AKA ( max(min(p, q)) ),
-          // could be is when p == q.
-          // Therefore only need to check to sqrt(num)
-          // Also, only need to check odd numbers (Technically only need 
-          // to check prime numbers, but I'm not sure how to do that without 
-          // ballooning complexity)
-          for ( let i = 3; i < root; i += 2 ) {
-              if ( num % i === 0 ) {
-                  return false;
-              }
-          }
-          return true;
-      } 
+      // 7. Private Key (23, 55)
 
-      function randomIntFromInterval(min, max) { // min and max included 
-        return Math.floor(Math.random() * (max - min + 1) + min);
-      }
+      const priD = getPrivateKey(publicKey, relativePrime)
+      document.getElementById("priKey").innerText = `${priD},${M}`
 
-      function getNextPrime(num) {
-        // We only need to check odd numbers
-        if ((num % 2) == 0) {
-          num += 1;
-        } else {
-          num += 2;
-        }
-        while (!isPrime(num)) {
-          num += 2;
-        }
-        return num
-      }
+      let priDownload = `${priD},${M}`
+      download(priDownload, "private.key", "txt")
 
-      function gcd(num1, num2){
-        while(num2){
-          let t = num2;
-          num2 = num1 % num2;
-          num1 = t;
-        }
-        return num1;
-      }
-
-      function getRelativePrime(num){
-        let temp = num +1;
-        let rp = factors(temp)
-        while (rp.length <= 3){
-          temp += num;
-          rp = factors(temp);
-        }
-        return rp;
-      }
-
-      function factors(n){
-        var num_factors = [], i;
- 
-        for (i = 1; i <= Math.floor(Math.sqrt(n)); i += 1){
-          if (n % i === 0){
-            num_factors.push(i);
-            if (n / i !== i){
-              num_factors.push(n / i);
-            }
-          }
-        }
-        num_factors.sort(function(x, y){return x - y;});  // numeric sort
-        return num_factors;
     }
 
 
-     //     (Public Encryption Exponent x Private Decryption Exponent) mod f(n) = 1
-      function getPrivateKey(pubE, rp){
-        let priE = rp / pubE;
-        // console.log(pubE)
-        // console.log(fn)
-        // while ((pubE * priE) % fn != 1){
-        //   priE +=1;
-        //   //console.log(priE);
-        // }
-        //console.log("im here");
-        return priE;
+    //     e = (p^{P_E})mod(m) where p is the plaintext
+    // 8. Encryption process
+    //       = (2^7) mod 55
+    //       = 18
+    function encrypt() {
+      genEncryptText();
+    }
+
+    function genEncryptText() {
+      let plaintext = document.getElementById("encryptText").value;
+      fileEl = document.getElementById('encryptFile');
+      fr = new FileReader();
+      fr.onload = function () {
+        let encryptKeyText = fr.result;
+        encryptKeyText = encryptKeyText.split(',');
+        let encryptKeysArr = encryptKeyText.map(x => parseInt(x));
+        let exponent = encryptKeysArr[0];
+        let modulus = encryptKeysArr[1];
+        let encryption = [];
+        for (let i = 0; i < plaintext.length; i++) {
+          charchar = plaintext[i].charCodeAt(0);
+          charVal = BigInt(charchar) ** BigInt(exponent);
+          charVal = charVal % BigInt(modulus);
+          encryption.push(Number(charVal));
+        }
+        document.getElementById("encryptOutput").innerText = encryption.join(",");
       }
+      fr.readAsText(fileEl.files[0]);
+    }
+
+    //     p = (e^P_d) mod (m)
+    // 9. Decryption process
+    //       = (18^23) mod (55)
+    //       = 2
+    function decrypt() {
+      genDencryptText();
+    }
+
+    function genDencryptText() {
+      let cipherText = document.getElementById("decryptText").value;
+      fileEl = document.getElementById('decryptFile');
+      fr = new FileReader();
+      fr.onload = function () {
+        let decryptKeyText = fr.result;
+        decryptKeyText = decryptKeyText.split(',');
+        cipherText = cipherText.split(',');
+        let decryptKeysArr = decryptKeyText.map(x => parseInt(x));
+        let cipherTextArr = cipherText.map(x => parseInt(x));
+        let exponent = decryptKeysArr[0];
+        let modulus = decryptKeysArr[1];
+        let decryption = [];
+        for (let i = 0; i < cipherText.length; i++) {
+          let temp = BigInt(cipherTextArr[i]) ** BigInt(exponent) % BigInt(modulus);
+          temp = String.fromCharCode(Number(temp));
+          decryption.push(temp);
+        }
+        document.getElementById("decryptOutput").innerText = decryption.join("");
+      }
+      fr.readAsText(fileEl.files[0]);
+    }
+
+    function randomPrime() {
+      return getNextPrime(randomIntFromInterval(1, 997));
+    }
+
+
+    function isPrime(num) {
+      if (num % 2 == 0) {
+        return false;
+      }
+      const root = Math.sqrt(num);
+      if (Number.isInteger(root)) { // If the root is an integer we skip a lot of checking here.
+        return false;
+      }
+      // Composite number is always p * q, because of this,
+      // the max that the lesser of {p, q} AKA ( max(min(p, q)) ),
+      // could be is when p == q.
+      // Therefore only need to check to sqrt(num)
+      // Also, only need to check odd numbers (Technically only need 
+      // to check prime numbers, but I'm not sure how to do that without 
+      // ballooning complexity)
+      for (let i = 3; i < root; i += 2) {
+        if (num % i === 0) {
+          return false;
+        }
+      }
+      return true;
+    }
+
+    function randomIntFromInterval(min, max) { // min and max included 
+      return Math.floor(Math.random() * (max - min + 1) + min);
+    }
+
+    function getNextPrime(num) {
+      // We only need to check odd numbers
+      if ((num % 2) == 0) {
+        num += 1;
+      } else {
+        num += 2;
+      }
+      while (!isPrime(num)) {
+        num += 2;
+      }
+      return num
+    }
+
+    function gcd(num1, num2) {
+      while (num2) {
+        let t = num2;
+        num2 = num1 % num2;
+        num1 = t;
+      }
+      return num1;
+    }
+
+    function getRelativePrime(num) {
+      let temp = num + 1;
+      let rp = factors(temp)
+      while (rp.length <= 3) {
+        temp += num;
+        rp = factors(temp);
+      }
+      return rp;
+    }
+
+    function factors(n) {
+      var num_factors = [],
+        i;
+
+      for (i = 1; i <= Math.floor(Math.sqrt(n)); i += 1) {
+        if (n % i === 0) {
+          num_factors.push(i);
+          if (n / i !== i) {
+            num_factors.push(n / i);
+          }
+        }
+      }
+      num_factors.sort(function (x, y) {
+        return x - y;
+      }); // numeric sort
+      return num_factors;
+    }
+
+
+    //     (Public Encryption Exponent x Private Decryption Exponent) mod f(n) = 1
+    function getPrivateKey(pubE, rp) {
+      let priE = rp / pubE;
+      // console.log(pubE)
+      // console.log(fn)
+      // while ((pubE * priE) % fn != 1){
+      //   priE +=1;
+      //   //console.log(priE);
+      // }
+      //console.log("im here");
+      return priE;
+    }
 
     function download(data, filename, type) {
-      let file = new Blob([data], {type: type});
-      let a = document.createElement("a"), url = URL.createObjectURL(file);
+      let file = new Blob([data], {
+        type: type
+      });
+      let a = document.createElement("a"),
+        url = URL.createObjectURL(file);
       a.href = url;
       a.download = filename;
       document.body.appendChild(a);
       a.click();
-      setTimeout(function() {
-          document.body.removeChild(a);
-          window.URL.revokeObjectURL(url);  
-      }, 0); 
+      setTimeout(function () {
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(url);
+      }, 0);
     }
-
   </script>
 </body>
+
 </html>
