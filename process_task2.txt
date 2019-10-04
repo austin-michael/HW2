@@ -1,0 +1,8 @@
+Link to online tool used for generating the key pair:
+
+https://www.devglan.com/online-tools/rsa-encryption-decryption
+
+List of options that we selected during the signing process:
+	Number of Bits: 1024 bit
+	Cipher Type: RSA
+	Encrytion RSA Key Type: Public Key
