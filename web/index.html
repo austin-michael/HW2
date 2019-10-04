@@ -5,16 +5,8 @@
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
     integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <meta charset="utf-8">
-  <title>Cryptosystem</title>
-  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
-  </script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
-    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
-  </script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
-    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
-  </script>
+  <title>RSA Cryptosystem</title>
+
   <style>
     .row {
       padding-left: 50px;
@@ -118,7 +110,7 @@
 
       // 5. Public Key: (7, 55)
       //                 7: Public Encryption Exponent (P_E)
-      document.getElementById("pubKey").innerText = `${publicKey},${M}`
+      document.getElementById("pubKey").innerText = `${publicKey},${M}`   
 
       let pubDownload = `${publicKey},${M}`
       download(pubDownload, "public.key", "txt")
@@ -154,23 +146,23 @@
     }
 
     function genEncryptText() {
-      let plaintext = document.getElementById("encryptText").value;
-      fileEl = document.getElementById('encryptFile');
+      let plaintext = document.getElementById("encryptText").value;   //get the plaintext from the DOM
+      fileEl = document.getElementById('encryptFile');                
       fr = new FileReader();
       fr.onload = function () {
         let encryptKeyText = fr.result;
-        encryptKeyText = encryptKeyText.split(',');
-        let encryptKeysArr = encryptKeyText.map(x => parseInt(x));
+        encryptKeyText = encryptKeyText.split(',');                   //remove the comma seperating the exponent and the modulous 
+        let encryptKeysArr = encryptKeyText.map(x => parseInt(x));    //store the values into an array
         let exponent = encryptKeysArr[0];
         let modulus = encryptKeysArr[1];
         let encryption = [];
         for (let i = 0; i < plaintext.length; i++) {
-          charchar = plaintext[i].charCodeAt(0);
+          charchar = plaintext[i].charCodeAt(0);            //returns the unicode of the character at 0 
           charVal = BigInt(charchar) ** BigInt(exponent);
           charVal = charVal % BigInt(modulus);
           encryption.push(Number(charVal));
         }
-        document.getElementById("encryptOutput").innerText = encryption.join(",");
+        document.getElementById("encryptOutput").innerText = encryption.join(",");  
       }
       fr.readAsText(fileEl.files[0]);
     }
@@ -184,14 +176,14 @@
     }
 
     function genDencryptText() {
-      let cipherText = document.getElementById("decryptText").value;
+      let cipherText = document.getElementById("decryptText").value;    //get the ciphertext
       fileEl = document.getElementById('decryptFile');
       fr = new FileReader();
       fr.onload = function () {
         let decryptKeyText = fr.result;
-        decryptKeyText = decryptKeyText.split(',');
-        cipherText = cipherText.split(',');
-        let decryptKeysArr = decryptKeyText.map(x => parseInt(x));
+        decryptKeyText = decryptKeyText.split(',');   //remove commas
+        cipherText = cipherText.split(',');                     
+        let decryptKeysArr = decryptKeyText.map(x => parseInt(x));    //store the values into arrays
         let cipherTextArr = cipherText.map(x => parseInt(x));
         let exponent = decryptKeysArr[0];
         let modulus = decryptKeysArr[1];
@@ -207,16 +199,16 @@
     }
 
     function randomPrime() {
-      return getNextPrime(randomIntFromInterval(1, 997));
+      return getNextPrime(randomIntFromInterval(1, 997)); // generate a random prime within 1 - 997 so our modulous is not too large
     }
 
 
     function isPrime(num) {
-      if (num % 2 == 0) {
+      if (num % 2 == 0) {   //eliminate even numbers
         return false;
       }
       const root = Math.sqrt(num);
-      if (Number.isInteger(root)) { // If the root is an integer we skip a lot of checking here.
+      if (Number.isInteger(root)) { // If the root is an integer we skip a lot of checking here as it is not prime
         return false;
       }
       // Composite number is always p * q, because of this,
@@ -228,7 +220,7 @@
       // ballooning complexity)
       for (let i = 3; i < root; i += 2) {
         if (num % i === 0) {
-          return false;
+          return false; 
         }
       }
       return true;
@@ -245,7 +237,7 @@
       } else {
         num += 2;
       }
-      while (!isPrime(num)) {
+      while (!isPrime(num)) { //search until we find a prime number
         num += 2;
       }
       return num
@@ -271,8 +263,7 @@
     }
 
     function factors(n) {
-      var num_factors = [],
-        i;
+      var num_factors = [], i;
 
       for (i = 1; i <= Math.floor(Math.sqrt(n)); i += 1) {
         if (n % i === 0) {
@@ -282,9 +273,9 @@
           }
         }
       }
-      num_factors.sort(function (x, y) {
+      num_factors.sort(function (x, y) { // numeric sort
         return x - y;
-      }); // numeric sort
+      }); 
       return num_factors;
     }
 
@@ -292,13 +283,6 @@
     //     (Public Encryption Exponent x Private Decryption Exponent) mod f(n) = 1
     function getPrivateKey(pubE, rp) {
       let priE = rp / pubE;
-      // console.log(pubE)
-      // console.log(fn)
-      // while ((pubE * priE) % fn != 1){
-      //   priE +=1;
-      //   //console.log(priE);
-      // }
-      //console.log("im here");
       return priE;
     }
 
@@ -317,6 +301,17 @@
         window.URL.revokeObjectURL(url);
       }, 0);
     }
+  </script>
+
+  <!--Bootstrap scripts must be loaded at the end of the body-->
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
+  </script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
   </script>
 </body>
 
